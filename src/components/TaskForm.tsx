@@ -25,7 +25,7 @@ interface Props {
 const priorities: Priority[] = ['High', 'Medium', 'Low'];
 const statuses: Status[] = ['Todo', 'In Progress', 'Done'];
 
-export default function TaskForm({ open, onClose, onSubmit, existingTitles, initial }: Props) {
+export default function TaskForm({ open, onClose, onSubmit, existingTitles, initial }: Props): JSX.Element {
   const [title, setTitle] = useState('');
   const [revenue, setRevenue] = useState<number | ''>('');
   const [timeTaken, setTimeTaken] = useState<number | ''>('');
@@ -55,7 +55,9 @@ export default function TaskForm({ open, onClose, onSubmit, existingTitles, init
   const duplicateTitle = useMemo(() => {
     const current = title.trim().toLowerCase();
     if (!current) return false;
-    const others = initial ? existingTitles.filter(t => t.toLowerCase() !== initial.title.toLowerCase()) : existingTitles;
+    const others = initial 
+      ? existingTitles.filter(t => t.toLowerCase() !== initial.title.toLowerCase()) 
+      : existingTitles;
     return others.map(t => t.toLowerCase()).includes(current);
   }, [title, existingTitles, initial]);
 
@@ -68,25 +70,26 @@ export default function TaskForm({ open, onClose, onSubmit, existingTitles, init
     !!status;
 
   const handleSubmit = () => {
-    // Ensure numeric values match the expected Task type
     const safeRevenue = typeof revenue === 'number' ? revenue : 0;
     const safeTime = typeof timeTaken === 'number' && timeTaken > 0 ? timeTaken : 1;
 
-    // Construct the payload explicitly to avoid TS2322
-  const payload: any = {
-  title: title.trim(),
-  revenue: safeRevenue,
-  timeTaken: safeTime,
-  priority: (priority || 'Medium') as Priority,
-  status: (status || 'Todo') as Status,
-  notes: notes.trim() || '',
+    // Use 'any' to bypass strict Omit<Task, 'id'> requirements for system fields like createdAt
+    const payload: any = {
+      title: title.trim(),
+      revenue: safeRevenue,
+      timeTaken: safeTime,
+      priority: (priority || 'Medium') as Priority,
+      status: (status || 'Todo') as Status,
+      notes: notes.trim() || '',
+    };
+
+    if (initial?.id) {
+      payload.id = initial.id;
+    }
+
+    onSubmit(payload);
+    onClose();
   };
-
-  if (initial?.id) {
-  payload.id = initial.id;
-  }
-
-onSubmit(payload);
 
   return (
     <Dialog open={open} onClose={onClose} fullWidth maxWidth="sm">
@@ -125,7 +128,12 @@ onSubmit(payload);
           <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2}>
             <FormControl fullWidth required>
               <InputLabel id="priority-label">Priority</InputLabel>
-              <Select labelId="priority-label" label="Priority" value={priority} onChange={e => setPriority(e.target.value as Priority)}>
+              <Select 
+                labelId="priority-label" 
+                label="Priority" 
+                value={priority} 
+                onChange={e => setPriority(e.target.value as Priority)}
+              >
                 {priorities.map(p => (
                   <MenuItem key={p} value={p}>{p}</MenuItem>
                 ))}
@@ -133,14 +141,25 @@ onSubmit(payload);
             </FormControl>
             <FormControl fullWidth required>
               <InputLabel id="status-label">Status</InputLabel>
-              <Select labelId="status-label" label="Status" value={status} onChange={e => setStatus(e.target.value as Status)}>
+              <Select 
+                labelId="status-label" 
+                label="Status" 
+                value={status} 
+                onChange={e => setStatus(e.target.value as Status)}
+              >
                 {statuses.map(s => (
                   <MenuItem key={s} value={s}>{s}</MenuItem>
                 ))}
               </Select>
             </FormControl>
           </Stack>
-          <TextField label="Notes" value={notes} onChange={e => setNotes(e.target.value)} multiline minRows={2} />
+          <TextField 
+            label="Notes" 
+            value={notes} 
+            onChange={e => setNotes(e.target.value)} 
+            multiline 
+            minRows={2} 
+          />
         </Stack>
       </DialogContent>
       <DialogActions>
@@ -150,7 +169,5 @@ onSubmit(payload);
         </Button>
       </DialogActions>
     </Dialog>
-  );
+ );
 }
-
-
