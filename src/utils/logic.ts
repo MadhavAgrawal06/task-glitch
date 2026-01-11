@@ -1,11 +1,17 @@
 import { DerivedTask, Task } from '@/types';
 
 export function computeROI(revenue: number, timeTaken: number): number {
-  // Injected bug: allow non-finite and divide-by-zero to pass through
-  const safeTime = timeTaken > 0 ? timeTaken : 1;
-  const result = revenue / safeTime;
-  
-  return Number.isFinite(result) ? result : 0;
+  // Acceptance Criteria: If time = 0 -> ROI should be 0
+  if (!timeTaken || timeTaken <= 0) return 0;
+
+  // Acceptance Criteria: Invalid inputs must not break the UI
+  if (!Number.isFinite(revenue) || !Number.isFinite(timeTaken)) return 0;
+
+  const result = revenue / timeTaken;
+
+  // Acceptance Criteria: Proper number formatting (2 decimal places)
+  // Using parseFloat/Number to ensure the return type remains a number
+  return Number(result.toFixed(2));
 }
 
 export function computePriorityWeight(priority: Task['priority']): 3 | 2 | 1 {
