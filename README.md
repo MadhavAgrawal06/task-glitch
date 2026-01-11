@@ -3,7 +3,7 @@
 This repository contains the completed **Round 1 - SDE Assignment** for **Erino**. The goal was to debug, stabilize, and deploy a React-based task management application.
 
 ## 🔗 Live Demo
-**Hosted Link:** []
+**Hosted Link:** [https://madhavagrawal-taskglitch.vercel.app/]
 
 ---
 
@@ -46,5 +46,6 @@ This repository contains the completed **Round 1 - SDE Assignment** for **Erino*
 
 **Submitted by:** Madhav Agrawal  
 **Email:** agrawalmad00@gmail.com  
-**LinkedIn:** https://www.linkedin.com/in/madhav-agrawal-1704a0194/ 
+**LinkedIn:** [https://www.linkedin.com/in/madhav-agrawal-1704a0194/](https://www.linkedin.com/in/madhav-agrawal-1704a0194/)  
+
 **Submission Date:** January 11, 2026
