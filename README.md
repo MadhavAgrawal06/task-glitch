@@ -43,6 +43,7 @@ This repository contains the completed **Round 1 - SDE Assignment** for **Erino*
 - **Deployment:** Vercel
 
 ---
+
 **Submitted by:** Madhav Agrawal  
 **Email:** agrawalmad00@gmail.com  
 **LinkedIn:** https://www.linkedin.com/in/madhav-agrawal-1704a0194/ 
